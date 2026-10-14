@@ -1,0 +1,3 @@
+# Filled-in denylists stay private
+*denylist*.txt
+!**/denylist.example.txt

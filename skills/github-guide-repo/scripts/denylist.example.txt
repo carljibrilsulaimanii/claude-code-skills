@@ -1,0 +1,25 @@
+# denylist.example.txt -- template for sanitize-scan.sh
+# Author:  Jibril Sulaiman (with Claude Code)
+# Date:    2026-10-14
+# Lives:   skills/github-guide-repo/scripts/ (template only). Copy it somewhere
+#          outside every public repo, e.g. ~/.config/guide-denylist.txt, fill it in,
+#          and point GUIDE_DENYLIST at the copy.
+# What:    One case-insensitive extended regex per line. Lines starting with # and
+#          blank lines are ignored.
+# Why:     The employer-specific patterns can't ship in a public scanner, so they
+#          live in a private file the scanner reads.
+
+# Company, brand and product names
+acme ?corp
+acme ?academy
+
+# Company domains and subdomains
+acme\.example
+acmecommunity
+
+# Account, portal and object ids (CRM portal, ad account, custom object type ids)
+98700001
+2-6[0-9]{7}
+
+# Staff and teammates (word boundaries stop partial matches)
+\b(jane|jordan)\b
