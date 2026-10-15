@@ -1,7 +1,7 @@
 <!--
   README.md -- claude-code-skills
   Author:  Jibril Sulaiman
-  Date:    2026-10-14
+  Date:    2026-10-14 (updated 2026-10-15)
   Lives:   Repo root (GitHub).
   What:    Claude Code skills for publishing integration guides, filing tasks,
            checking funnels and reconciling ad-platform conversions against a CRM.
@@ -20,6 +20,7 @@ These are the ones I use most, with everything specific to my employer removed.
 | Skill | What it does |
 |---|---|
 | [`skills/github-guide-repo/`](skills/github-guide-repo/) | Turns an integration you built into a public, sanitized GitHub guide repo: gathering the build chats, screenshots and live code, removing everything that identifies the employer, a click-by-click README standard, and scripts that check links and scan for leaks before the push |
+| [`skills/asana-task/`](skills/asana-task/) | Writes Asana tasks a teammate can pick up cold: which project and owner, a fixed description layout with numbered steps and code blocks at the bottom, and the `html_notes` tags Asana accepts and rejects |
 
 More skills are being added.
 
