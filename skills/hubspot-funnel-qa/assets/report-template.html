@@ -1,0 +1,180 @@
+<!--
+  report-template.html -- punch-list layout for hubspot-funnel-qa
+  Author:  Jibril Sulaiman (with Claude Code)
+  Date:    2026-10-15
+  Lives:   skills/hubspot-funnel-qa/assets/
+  What:    A page-by-page QA punch list with severity chips, a decisions block, a
+           cross-cutting band and a "verified correct" section. Replace the CAPS text.
+  Why:     Grouped by page with the full URL on every task, it pastes straight into a
+           task tracker, one task per line.
+-->
+<title>Funnel Task List</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ink:#1B1F24; --ink-2:#4A5560; --ink-3:#71808D;
+  --paper:#FBF8F4; --surface:#FFFFFF; --line:#E4DDD3; --line-2:#F0EAE1;
+  --navy:#23395B;
+  --crit:#B3261E; --crit-bg:#FBEAE8;
+  --warn:#9A5B06; --warn-bg:#FBF1E2;
+  --ok:#1B7A4B; --ok-bg:#E7F4EC;
+  --info:#2C5A7A; --info-bg:#E6EFF5;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --body:"Instrument Sans",system-ui,-apple-system,sans-serif;
+  --disp:"Bricolage Grotesque",var(--body);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink:#EDE9E3; --ink-2:#B3AEA6; --ink-3:#8A857D;
+  --paper:#16181B; --surface:#1E2125; --line:#33383E; --line-2:#282C31;
+  --navy:#8FAFD9;
+  --crit:#FF9B90; --crit-bg:#3A1E1B;
+  --warn:#F0BC6E; --warn-bg:#33260F;
+  --ok:#6FD9A0; --ok-bg:#132E20;
+  --info:#8FC4E5; --info-bg:#162A36;
+}}
+:root[data-theme="dark"]{
+  --ink:#EDE9E3; --ink-2:#B3AEA6; --ink-3:#8A857D;
+  --paper:#16181B; --surface:#1E2125; --line:#33383E; --line-2:#282C31;
+  --navy:#8FAFD9;
+  --crit:#FF9B90; --crit-bg:#3A1E1B;
+  --warn:#F0BC6E; --warn-bg:#33260F;
+  --ok:#6FD9A0; --ok-bg:#132E20;
+  --info:#8FC4E5; --info-bg:#162A36;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 24px 96px}
+h1,h2{font-family:var(--disp);text-wrap:balance;margin:0}
+a{color:inherit}
+.mast{border-bottom:2px solid var(--ink);padding-bottom:18px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+h1{font-size:clamp(30px,5vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.06}
+.sub{color:var(--ink-2);font-size:16px;max-width:66ch;margin:12px 0 0}
+.srcs{display:flex;flex-wrap:wrap;gap:4px 16px;font-family:var(--mono);font-size:11.5px;color:var(--ink-3);margin-top:14px}
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:26px 0 38px}
+.tally div{background:var(--surface);padding:13px 15px}
+.tally b{display:block;font-family:var(--disp);font-size:25px;font-weight:800;font-variant-numeric:tabular-nums}
+.tally span{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.tally .c b{color:var(--crit)}
+
+.pgblk{margin:0 0 34px;border:1px solid var(--line);background:var(--surface)}
+.pghead{padding:13px 20px;border-bottom:1px solid var(--line);background:var(--paper)}
+.pghead h2{font-size:17px;font-weight:600;letter-spacing:-.01em;margin-bottom:3px}
+.pghead .u{font-family:var(--mono);font-size:11.5px}
+.pghead .u a{color:var(--navy);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--navy) 35%,transparent);word-break:break-all}
+.pghead .u a:hover{border-bottom-color:var(--navy)}
+.cnt{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;margin-top:5px}
+
+ol.tasks{list-style:none;margin:0;padding:0;counter-reset:t}
+ol.tasks li{counter-increment:t;display:grid;grid-template-columns:30px 74px 1fr;gap:0 12px;padding:11px 20px;border-bottom:1px solid var(--line-2);align-items:start}
+ol.tasks li:last-child{border-bottom:0}
+ol.tasks li::before{content:counter(t);font-family:var(--mono);font-size:11px;color:var(--ink-3);padding-top:3px;font-variant-numeric:tabular-nums}
+.sev{font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;font-weight:500;padding:2px 6px;border-radius:2px;text-align:center;white-space:nowrap;margin-top:1px}
+.sev.b{background:var(--crit-bg);color:var(--crit)}
+.sev.f{background:var(--warn-bg);color:var(--warn)}
+.sev.n{background:var(--info-bg);color:var(--info)}
+.sev.a{background:var(--ok-bg);color:var(--ok)}
+.sev.d{background:var(--line-2);color:var(--ink-3)}
+ol.tasks li.done .tk{color:var(--ink-3);text-decoration:line-through}
+.tk{font-size:14.5px}
+.tk .url{display:block;font-family:var(--mono);font-size:11.5px;color:var(--ink-3);margin-top:3px;word-break:break-all}
+.tk em{color:var(--ink-2);font-style:normal;display:block;font-size:13px;margin-top:3px}
+code{font-family:var(--mono);font-size:.87em;background:var(--line-2);padding:1px 4px;border-radius:3px;word-break:break-word}
+h2.sect{font-family:var(--disp);font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--ink);padding-bottom:7px;margin:36px 0 20px}
+.call{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--navy);padding:15px 18px;margin:0 0 20px}
+.call h3{font-family:var(--disp);font-size:14px;font-weight:600;margin:0 0 6px}
+.call p{margin:0;font-size:14px;color:var(--ink-2)}
+.call p+p{margin-top:7px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:0 0 26px;font-size:12.5px;color:var(--ink-2);align-items:center}
+:focus-visible{outline:2px solid var(--ok);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:640px){ol.tasks li{grid-template-columns:24px 1fr;gap:2px 8px}.sev{grid-column:2;justify-self:start;margin-bottom:3px}}
+</style>
+
+<div class="wrap">
+
+<!-- ============================================================
+     FUNNEL QA — PUNCH LIST TEMPLATE
+     Structure that works (see SKILL.md "Report page by page"):
+       1. masthead: funnel, date, which standards you checked against
+       2. tally: the few numbers a founder skims for
+       3. legend: severity meanings
+       4. decisions block: anything needing a human ruling FIRST
+       5. cross-cutting band: stated ONCE (date standard, share images, indexing)
+       6. one .pgblk per page, tasks listed individually, FULL URL on every task
+       7. "verified correct" block: what NOT to redo
+     Severity classes: sev b=Blocker  f=Fix  n=Naming  a=Ask  d=Done
+     Order within each page: open items first, done items (li class="done") last
+     ============================================================ -->
+
+<header class="mast">
+  <p class="eyebrow">FUNNEL NAME · Build Tasks · DATE</p>
+  <h1>FUNNEL NAME Task List</h1>
+  <p class="sub">Every task grouped by page, listed individually, with the full URL on each one so
+  it can be pasted straight into a task tracker as a standalone task.</p>
+  <div class="srcs">
+    <span>Checked against: SPEC DOC · NAMING STANDARDS · PIXEL PLAN · BRAND GUIDE</span>
+  </div>
+</header>
+
+<div class="tally">
+  <div class="c"><b>0</b><span>Tasks</span></div>
+  <div class="c"><b>0</b><span>Blockers</span></div>
+  <div class="c"><b>0</b><span>Dead CTAs</span></div>
+  <div class="c"><b>0</b><span>Pages</span></div>
+</div>
+
+<div class="legend">
+  <span class="sev b">Blocker</span> breaks a customer action ·
+  <span class="sev f">Fix</span> content, copy or design ·
+  <span class="sev n">Naming</span> against the naming standards ·
+  <span class="sev a">Ask</span> needs a human decision first ·
+  <span class="sev d">Done</span> finished, listed last
+</div>
+
+<div class="call">
+  <h3>Decisions needed before the build starts</h3>
+  <p><strong>1.</strong> Anything that blocks work until a human rules on it — the class date, which
+  product a page sells, whether a page should exist at all.</p>
+</div>
+
+<h2 class="sect">Applies to every page</h2>
+<div class="pgblk">
+  <div class="pghead">
+    <h2>Cross-cutting</h2>
+    <div class="cnt">Stated once here rather than repeated per page</div>
+  </div>
+  <ol class="tasks">
+    <li><span class="sev f">Fix</span><span class="tk">The date standard, share images, indexing,
+      product naming — whatever is true funnel-wide.
+      <span class="url">https://offer.example.com/</span></span></li>
+  </ol>
+</div>
+
+<h2 class="sect">Step 1 — PAGE NAME</h2>
+<div class="pgblk">
+  <div class="pghead">
+    <h2>1. Builder step title as it appears in HubSpot</h2>
+    <div class="u"><a href="https://offer.example.com/SLUG" target="_blank" rel="noopener">https://offer.example.com/SLUG</a></div>
+    <div class="cnt">0 open · 0 done</div>
+  </div>
+  <ol class="tasks">
+    <li><span class="sev b">Blocker</span><span class="tk">One atomic task. Say what is wrong, what
+      it should be, and the evidence — quote the live string or the link ID.
+      <span class="url">https://offer.example.com/SLUG</span></span></li>
+    <li><span class="sev a">Ask</span><span class="tk">A question for the spec owner, with enough
+      context to answer without re-reading the audit.
+      <span class="url">https://offer.example.com/SLUG</span></span></li>
+    <li class="done"><span class="sev d">Done</span><span class="tk">A task closed since the last pass.
+      <span class="url">https://offer.example.com/SLUG</span></span></li>
+  </ol>
+</div>
+
+<h2 class="sect">Verified correct — do not redo</h2>
+<div class="call">
+  <h3>Already right</h3>
+  <p>List what matches the spec exactly, so nobody "fixes" it into a mismatch. On a re-audit, also
+  name what closed since last time — that is the part the build team most wants to see.</p>
+</div>
+
+</div>

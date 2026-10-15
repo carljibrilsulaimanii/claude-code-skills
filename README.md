@@ -21,8 +21,8 @@ These are the ones I use most, with everything specific to my employer removed.
 |---|---|
 | [`skills/github-guide-repo/`](skills/github-guide-repo/) | Turns an integration you built into a public, sanitized GitHub guide repo: gathering the build chats, screenshots and live code, removing everything that identifies the employer, a click-by-click README standard, and scripts that check links and scan for leaks before the push |
 | [`skills/asana-task/`](skills/asana-task/) | Writes Asana tasks a teammate can pick up cold: which project and owner, a fixed description layout with numbered steps and code blocks at the bottom, and the `html_notes` tags Asana accepts and rejects |
-
-More skills are being added.
+| [`skills/hubspot-funnel-qa/`](skills/hubspot-funnel-qa/) | Builds, self-checks and audits HubSpot funnel pages against a spec doc: a 40-entry defect catalogue (mostly clone residue and the hidden second module set), a full checklist, Stripe payment-link checks, a multi-page console crawler with a desktop-vs-mobile diff, and a page-by-page punch-list template |
+| [`skills/meta-pixel-crm-reconcile/`](skills/meta-pixel-crm-reconcile/) | Reconciles Meta pixel and Conversions API events with HubSpot records (Purchase vs succeeded payments, Lead vs registrations) using matched windows and a three-way comparison, and explains each gap: duplicate senders, browser vs server, inflated CRM records |
 
 ## Install
 
@@ -64,7 +64,7 @@ the Stripe webhook integration") and the skill loads itself, or call it by name 
 
 The scripts need Bash (Git Bash on Windows) and Python 3.
 
-## Scripts
+## Scripts (github-guide-repo)
 
 | Script | What it checks |
 |---|---|
