@@ -1,3 +1,13 @@
 # Filled-in denylists stay private
 *denylist*.txt
 !**/denylist.example.txt
+
+# tiktok-to-skill pipeline: source media, transcripts and cookies stay local
+videos/
+transcripts/
+*.mp4
+*.mp3
+*.part
+*.srt
+seen.txt
+*cookies*.txt
