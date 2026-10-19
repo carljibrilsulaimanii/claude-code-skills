@@ -21,7 +21,19 @@
 4. `## How it works`: the flow, one short paragraph or a diagram
 5. `## What's in this repo`: a file table (path → what it is → where it gets pasted)
 6. `## Table of contents`, which lists every setup step
-7. `## 1. Requirements`: plans or tiers, permissions, tools with versions
+7. `## Prerequisites and dependencies`, **required in every README**. Tables with
+   columns *What · Version or plan · Why · Check it's ready*, grouped as:
+   - **Accounts, plans and tiers** on every platform the steps touch.
+   - **Permissions and scopes**: the user's access in each app, and every API scope,
+     secret name and key type the steps use.
+   - **Tools with versions**: Node, Python, PowerShell, Git, browsers, CLIs, packages.
+   - **Claude Code and its integrations, when the build used them**: Claude Code itself,
+     each connector or MCP server, Claude in Chrome and the signed-in profile it needs,
+     local token files. For each: what it was used for, **what it can't do**, and a
+     one-line way to check it's connected.
+   - **Optional** items marked as optional, and a note when the build can be done by
+     hand without Claude.
+   Every tool, secret, scope and connector named anywhere in the steps must appear here.
 8. `## 2. Setup, step by step` (split per platform if large: `## 3. Setup: Meta`...)
 9. Reference sections: ids and dedupe, hashing, what passes through, reconciling
 10. `## Troubleshooting`: a table of symptom → cause → the step that fixes it

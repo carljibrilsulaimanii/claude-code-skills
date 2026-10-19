@@ -202,6 +202,12 @@ ids in fixtures, never ones copied from real payloads.
 
 Follow [reference/readme-standard.md](reference/readme-standard.md) exactly. In short:
 
+- **Prerequisites and dependencies, always.** Every README has this section before the
+  setup steps: accounts and plan tiers, permissions and API scopes, tools with versions,
+  and, when Claude Code did any of the build, Claude Code plus each connector or MCP
+  server, Claude in Chrome (and the signed-in profile it needs) and local token files.
+  Say what each was used for, what it can't do, and how to check it's ready. Format in
+  [reference/readme-standard.md](reference/readme-standard.md) item 7.
 - **Why it exists** states the whole problem: what the platform can't do natively and
   what the vendor confirmed. It is not a one-line summary.
 - **Setup, step by step:** numbered steps with lettered sub-steps and the exact on-screen
@@ -228,17 +234,20 @@ Run every check; don't skip any:
    `grep -o "inp\.\w*"`, `inputFields`, `outputFields` and the status strings. Diff them
    against the README tables. Also check every script name, npm script, function and
    file the README mentions.
-2. **Cross-references.** After renumbering steps, fix the table-of-contents anchors and
+2. **Prerequisites cover the steps.** List every tool, secret name, scope, plan tier,
+   connector and command the steps use and confirm each one is in the Prerequisites
+   and dependencies section. A missing section blocks the push.
+3. **Cross-references.** After renumbering steps, fix the table-of-contents anchors and
    every "Step N" reference in Troubleshooting and other sections.
-3. **Tests:** `npm test` (or the repo's test command) must pass. Report the counts.
-4. **Sanitize scan** (set `GUIDE_DENYLIST` to your denylist file first):
+4. **Tests:** `npm test` (or the repo's test command) must pass. Report the counts.
+5. **Sanitize scan** (set `GUIDE_DENYLIST` to your denylist file first):
    ```bash
    bash ~/.claude/skills/github-guide-repo/scripts/sanitize-scan.sh <repo-dir>
    ```
    Runs [`scripts/sanitize-scan.sh`](scripts/sanitize-scan.sh). Every hit must be fixed
    or be a deliberate placeholder you can explain. Read the domain list by eye. If this
    build introduced a new identifier, add it to your denylist.
-5. **Code-file links:** every backticked repo path must be a link, and no relative link
+6. **Code-file links:** every backticked repo path must be a link, and no relative link
    may be broken:
    ```bash
    python ~/.claude/skills/github-guide-repo/scripts/link-check.py <repo-dir>
@@ -258,7 +267,7 @@ Run every check; don't skip any:
    block sits in a list: ``Runs [`scripts/x.mjs`](scripts/x.mjs).`` Check matches by
    hand: `npm run send` also matches `npm run send-batch`, and "Next: npm run x" in
    console *output* is not a command.
-6. When splicing drafts, anchor on headings at the **start of a line**
+7. When splicing drafts, anchor on headings at the **start of a line**
    (`'\n## Heading'`). Drafts often quote the headings inside an HTML comment, and a
    plain `index()` matches the comment instead.
 
