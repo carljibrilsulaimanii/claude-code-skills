@@ -1,5 +1,9 @@
 # Pipeline: TikTok profile → transcripts → Claude skill
 
+> These steps are now a skill: [`skills/tiktok-ig-to-skill/`](../../skills/tiktok-ig-to-skill/).
+> It also covers Instagram, corpus slicing and packaging. This page stays as the
+> record of how car-buying-coach was built.
+
 This is how the skill in [`skills/car-buying-coach/`](../../skills/car-buying-coach/) was built. About 1,400 short
 videos from one car-negotiation creator were downloaded, transcribed locally, and
 distilled into a skill. The videos and transcripts are not in this repo.
