@@ -7,8 +7,8 @@
            checking funnels, reconciling ad-platform conversions against a CRM,
            auditing UTM attribution from ad click to purchase,
            running an ad pipeline from research to measurement,
-           coaching a car purchase, and turning a TikTok or Instagram
-           creator's posts into a skill.
+           coaching a car purchase, building and growing a mobile app,
+           and turning a TikTok or Instagram creator's posts into a skill.
   Why:     Each skill came out of repeated real work; written down once, Claude
            follows the same rules every time instead of being corrected again.
 -->
@@ -31,11 +31,13 @@ These are the ones I use most, with everything specific to my employer removed.
 | [`skills/ad-creation-management/`](skills/ad-creation-management/) | Runs one offer's paid-social ads through five gated stages that share one Campaign Blueprint: research and positioning into a 50-angle Creative Mosaic, writing hooks, copy and scripts, making static and video creative, launching on Meta (delivery statuses, learning phase, the optimization-event fields people misread), and measuring on purchases rather than leads so the results pick the next round's angles |
 | [`skills/car-buying-coach/`](skills/car-buying-coach/) | Coaches you through buying or leasing a car one decision at a time and drafts the texts and emails you send dealerships: getting quotes, out-the-door pricing, financing and F&I add-ons, trade-ins and dealer tactics. Distilled from about 1,400 videos by a former dealership salesperson and finance manager (see [`pipelines/tiktok-to-skill/`](pipelines/tiktok-to-skill/)) |
 | [`skills/tiktok-ig-to-skill/`](skills/tiktok-ig-to-skill/) | Turns a TikTok or Instagram creator's posts into a Claude skill, the same way car-buying-coach was built: downloads the whole profile (yt-dlp for TikTok, gallery-dl for Instagram), transcribes it locally ([`transcribe_all.py`](skills/tiktok-ig-to-skill/scripts/transcribe_all.py)), slices the corpus evenly across the timeline for parallel distilling ([`slice_corpus.py`](skills/tiktok-ig-to-skill/scripts/slice_corpus.py)), writes the skill from a proven skeleton, and packages it for upload ([`package_skill.py`](skills/tiktok-ig-to-skill/scripts/package_skill.py)) |
+| [`skills/indie-app-playbook/`](skills/indie-app-playbook/) | Situation-by-situation guidance for a solo developer building a mobile app with AI: picking a proven idea, the stack and the two bugs AI agents quietly add, getting through App Store review, downloads without paid ads (ASO, localization, reviews, SEO pages, showing up in AI answers), the Promise → Quiz → Plan → Paywall onboarding flow, design fixes, and teardowns of how big apps make money, with which parts are fair to borrow. Built from an indie developer's TikTok and Instagram videos with tiktok-ig-to-skill |
 
 ## Use a skill in claude.ai and the phone app
 
 [`bundles/`](bundles/) has skills zipped for upload:
-[`car-buying-coach.skill`](bundles/car-buying-coach.skill) and
+[`car-buying-coach.skill`](bundles/car-buying-coach.skill),
+[`indie-app-playbook.skill`](bundles/indie-app-playbook.skill) and
 [`tiktok-ig-to-skill.skill`](bundles/tiktok-ig-to-skill.skill). In claude.ai go to
 **Settings** → **Capabilities** → **Skills** → **Upload skill**, pick the file, and
 turn it on. It then works on the web, desktop and mobile apps under the same account.
