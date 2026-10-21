@@ -6,6 +6,7 @@
   What:    Claude Code skills for publishing integration guides, filing tasks,
            checking funnels, reconciling ad-platform conversions against a CRM,
            auditing UTM attribution from ad click to purchase,
+           running an ad pipeline from research to measurement,
            and coaching a car purchase.
   Why:     Each skill came out of repeated real work; written down once, Claude
            follows the same rules every time instead of being corrected again.
@@ -26,6 +27,7 @@ These are the ones I use most, with everything specific to my employer removed.
 | [`skills/hubspot-funnel-qa/`](skills/hubspot-funnel-qa/) | Builds, self-checks and audits HubSpot funnel pages against a spec doc: a 40-entry defect catalogue (mostly clone residue and the hidden second module set), a full checklist, Stripe payment-link checks, a multi-page console crawler with a desktop-vs-mobile diff, and a page-by-page punch-list template |
 | [`skills/meta-pixel-crm-reconcile/`](skills/meta-pixel-crm-reconcile/) | Reconciles Meta pixel and Conversions API events with HubSpot records (Purchase vs succeeded payments, Lead vs registrations) using matched windows and a three-way comparison, and explains each gap: duplicate senders, browser vs server, inflated CRM records |
 | [`skills/hubspot-stripe-utm-qa/`](skills/hubspot-stripe-utm-qa/) | Finds where a UTM was lost between the ad click and the purchase record in a HubSpot + Stripe setup, proves it with a test, and fixes it without overwriting real captures: what each first / last touch field should mean, eleven repeatable leak tests, a simulate-then-deploy playbook with the HubSpot UI and rate-limit traps, and a one-command live audit script ([`utm_audit.py`](skills/hubspot-stripe-utm-qa/scripts/utm_audit.py)) |
+| [`skills/ad-creation-management/`](skills/ad-creation-management/) | Runs one offer's paid-social ads through five gated stages that share one Campaign Blueprint: research and positioning into a 50-angle Creative Mosaic, writing hooks, copy and scripts, making static and video creative, launching on Meta (delivery statuses, learning phase, the optimization-event fields people misread), and measuring on purchases rather than leads so the results pick the next round's angles |
 | [`skills/car-buying-coach/`](skills/car-buying-coach/) | Coaches you through buying or leasing a car one decision at a time and drafts the texts and emails you send dealerships: getting quotes, out-the-door pricing, financing and F&I add-ons, trade-ins and dealer tactics. Distilled from about 1,400 videos by a former dealership salesperson and finance manager (see [`pipelines/tiktok-to-skill/`](pipelines/tiktok-to-skill/)) |
 
 ## Use a skill in claude.ai and the phone app
