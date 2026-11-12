@@ -1,7 +1,7 @@
 <!--
   checklist.md -- the full QA run for hubspot-funnel-qa
   Author:  Jibril Sulaiman (with Claude Code)
-  Date:    2026-10-15
+  Date:    2026-10-15 (updated 2026-11-12: spec doc pulled fresh, domains)
   Lives:   skills/hubspot-funnel-qa/references/
   What:    Every check in the skill as one runnable list, worst damage first, with the
            defect number from defects.md that explains each one.
@@ -17,7 +17,8 @@ entries in [defects.md](defects.md).
 ## A. Gather before touching anything
 
 - [ ] Event **topic and date** from the calendar, not from a doc title; weekday checked
-- [ ] **Spec doc** (and which version the build team has)
+- [ ] **Spec doc** (and which version the build team has), pulled fresh now, not from
+      an earlier copy; pull it again before saying done and before every publish
 - [ ] **Brand guide**, **naming standards**, **pixel plan**: whichever the work touches
 - [ ] **Product checklist**, if prices or payment links are involved
 - [ ] **Edits tracker** rows, if any
@@ -80,6 +81,15 @@ Missing an input? Narrow the work and say so in the report.
 - [ ] No stale clones on odd slugs [11]; no two pages sharing an internal name [12]
 - [ ] Replaced pages retired the same day [30]
 - [ ] The page the clone came from checked too [4]
+
+**Domains** (see [domains.md](domains.md))
+- [ ] [`domaincheck.sh`](../scripts/domaincheck.sh) run on every domain that leads into
+      this funnel; none lands on a 404, a 5xx or no response [41] [42]
+- [ ] Every domain that forwards into this funnel still lands on a live page, after any
+      re-slug or unpublish [42]
+- [ ] Any platform move: every old path exists or redirects on the new host **before**
+      DNS moves [41]
+- [ ] Parked brand domains reported once, as a single Ask [42]
 
 ## D. The submission chain [32]
 

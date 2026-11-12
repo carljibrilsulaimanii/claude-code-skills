@@ -1,7 +1,7 @@
 <!--
   queries.md -- call shapes for meta-pixel-crm-reconcile
   Author:  Jibril Sulaiman (with Claude Code)
-  Date:    2026-09-21 (generic public version 2026-10-15)
+  Date:    2026-09-21 (generic public version 2026-10-15; updated 2026-11-12: daylight-saving helper)
   Lives:   skills/meta-pixel-crm-reconcile/references/
   What:    Exact Meta and HubSpot query shapes for each side of the reconciliation.
   Why:     The wrong tool or filter shape returns a plausible number that is wrong;
@@ -19,6 +19,17 @@ Meta's dataset stats take unix seconds; HubSpot's search API takes datetimes as 
 date -u +%s                                 # now, seconds
 date -u -d '2026-09-20T04:00:00Z' +%s       # an instant, seconds (x1000 for HubSpot)
 ```
+
+To turn a local midnight (or any local time) into the exact UTC instant, daylight
+saving included, let the time-zone database do it. Set `TZ_NAME` to your reporting zone:
+
+```bash
+TZ_NAME=America/New_York node -e "const z=process.env.TZ_NAME,[d,t]=process.argv[1].split(' ');for(let h=-14;h<=14;h++){const u=new Date(Date.parse(d+'T'+t+':00Z')-h*36e5);const f=new Intl.DateTimeFormat('en-CA',{timeZone:z,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(u).replace(', ','T');if(f===d+'T'+t){console.log(u.toISOString());break}}" "2026-11-05 00:00"
+# -> 2026-11-05T05:00:00.000Z   (a standard-time day starts at 05:00Z)
+```
+
+Run it for the start of the first day and the start of the day after the last one; on
+a window that crosses a clock change the two offsets differ, and that's correct.
 
 Meta labels buckets in the **ad account's** time zone. Convert from the timestamps you
 passed in rather than trusting the labels.

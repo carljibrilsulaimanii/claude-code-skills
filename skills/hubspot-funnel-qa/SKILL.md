@@ -17,7 +17,7 @@ description: >-
 <!--
   SKILL.md -- hubspot-funnel-qa
   Author:  Jibril Sulaiman (with Claude Code)
-  Date:    2026-10-15
+  Date:    2026-10-15 (updated 2026-11-12: spec doc pulled fresh, domains, safe editing)
   Lives:   ~/.claude/skills/hubspot-funnel-qa/SKILL.md (user level) or
            <project>/.claude/skills/hubspot-funnel-qa/SKILL.md
   What:    One method for building, self-checking and auditing HubSpot funnel pages,
@@ -71,6 +71,27 @@ Also gather:
 - **Which page to clone from.** There is rarely a clean source. Assume the source is
   wrong until checked, and budget a full pass over the new funnel, not only the parts
   you edited.
+
+### Always pull the spec doc fresh
+
+Spec authors keep adding to the doc while the build is in progress, often minutes before
+they check the page. **Re-download it at three points: before you start, before you say
+a page is done, and before every publish.** A copy pulled earlier in the same session is
+out of date: one early pull missed nine requests added at the bottom of the doc, and the
+author found them on the live page.
+
+- **Export the whole thing.** For a Google Doc, download it as `.docx`: a plain-text
+  read can return only the first tab, and the text export drops the screenshots authors
+  use to point at sections. Unzip it, read `word/document.xml` in order, and map each
+  image in `word/media` to the instruction just before it.
+- **Read every tab, to the last line.** New requests get added at the bottom of the
+  newest tab.
+- **Diff against the last pull** (text, highlights, strikethrough, image hashes) and
+  list what's new, so nothing is skipped.
+- **Do exactly what the doc says.** If it says "Update #4", change #4, even when the new
+  text looks like it belongs elsewhere. If following it literally causes a problem, do
+  it and point the problem out; don't quietly put the change somewhere else.
+- **Report against the doc line by line:** every instruction, done or not, and why.
 
 **If a document isn't supplied, say so and narrow the work.** Audit for the defect
 classes you can judge without a standard (dead buttons, stale dates, drift between
@@ -147,6 +168,12 @@ short:
   from the spec doc, take it to the author with the policy text; don't quietly rewrite
   it and don't leave ads rejected.
 
+- **Do the domains in front of the funnel still land?** A funnel can be perfect in
+  HubSpot and unreachable: a domain repointed before its pages existed, or a vanity
+  domain forwarding to a page that moved. Run
+  [`scripts/domaincheck.sh`](scripts/domaincheck.sh) on every domain that leads in;
+  [`references/domains.md`](references/domains.md) explains how to read the result.
+
 [`references/defects.md`](references/defects.md) is the catalogue behind every check:
 what each defect looks like, what it really is, and how to avoid it. Read it before
 building or reporting.
@@ -178,7 +205,15 @@ skimming for what's at risk.
 [`assets/report-template.html`](assets/report-template.html) is a working layout with
 the severity chips styled. Publish it as a page, or offer a Word copy for comments.
 
-## 5. Re-audits
+## 5. Fixing what you found
+
+QA usually turns into fixing. Read
+[`references/editing-pages.md`](references/editing-pages.md) before the first save:
+how to read and save Head HTML without wiping it, why `{#` in CSS blanks a HubSpot
+page, why inserting a row moves the build team's row-numbered styles, and why the
+editor can publish a stale copy.
+
+## 6. Re-audits
 
 Funnels get fixed while you're looking at them.
 

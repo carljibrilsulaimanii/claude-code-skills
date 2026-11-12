@@ -1,7 +1,7 @@
 <!--
   defects.md -- the defect catalogue for hubspot-funnel-qa
   Author:  Jibril Sulaiman (with Claude Code)
-  Date:    2026-10-15
+  Date:    2026-10-15 (updated 2026-11-12: domains, #41-#42)
   Lives:   skills/hubspot-funnel-qa/references/
   What:    Every defect class that shipped on real HubSpot funnels and was caught
            afterwards, as "looks like / really is / avoid it".
@@ -288,3 +288,40 @@ stopped. All the flagged phrases came from the spec doc.
 **Avoid it:** trace the rejection to the page the ads actually point at before
 rewriting anything; never soften approved copy unilaterally; never leave ads rejected.
 Take the phrases, the policy text and an alternative to the doc's author.
+
+## Domains
+
+### 41. The domain moved before its pages
+**Looks like:** a planned platform move. The funnel is being rebuilt in HubSpot, the
+domain has been pointed at HubSpot, and HubSpot shows the domain connected.
+**Really is:** the whole funnel is down. An application-and-deposit funnel's two domains
+were switched from another platform to HubSpot between two checks a few hours apart,
+with no pages published on them in HubSpot, so every path, the home page included,
+returned HubSpot's "Page not found". Nothing alerts anyone: the old funnel still looks
+fine on the old platform, the new pages look fine in the editor, and ads, emails and
+texts keep sending people into a 404.
+**Avoid it:** a move is two changes, DNS and pages, and the order matters: **pages
+first**, published on the domain and checked at their real URLs, **then DNS**. Before
+repointing, list every path the old platform served (from the platform's own page list,
+not old links, because some platforms answer any unknown path with a 200) and confirm
+each resolves on the new host. After the switch, run
+[`domaincheck.sh`](../scripts/domaincheck.sh) and open every path. A HubSpot 404 on
+every path is a **Blocker** on every page of the funnel, reported once at the top.
+
+### 42. The forwarding domain nobody re-checks
+**Looks like:** nothing. Vanity and old-campaign domains are set up once and never
+appear in a funnel audit, because no page lives on them.
+**Really is:** each one forwards to a page that can move. Three shapes, all live at
+once:
+- **Forwards into a 404:** an old community domain forwarding to a path that no longer
+  exists.
+- **Forwards into a page that will change:** five event domains forwarding to one sales
+  page. Re-slug or unpublish it and all five break, with nothing in the CMS to show it.
+- **Parked at the registrar:** a dozen brand-name domains showing the registrar's
+  placeholder page, which can carry third-party ads.
+**Avoid it:** run the domain sweep on every QA pass that touches a page a domain
+forwards to, and after any re-slug or unpublish. Report a forward into a 404 as a
+**Blocker**. Report parked brand domains once, as a single **Ask** (forward each to its
+live site, or let it lapse), not as a task per domain. Fix the record where the
+domain's nameservers point, which isn't always the registrar (see
+[domains.md](domains.md)).

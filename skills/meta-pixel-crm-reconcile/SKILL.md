@@ -18,7 +18,7 @@ description: >-
 <!--
   SKILL.md -- meta-pixel-crm-reconcile
   Author:  Jibril Sulaiman (with Claude Code)
-  Date:    2026-09-21 (generic public version 2026-10-15)
+  Date:    2026-09-21 (generic public version 2026-10-15; updated 2026-11-12: daylight saving)
   Lives:   ~/.claude/skills/meta-pixel-crm-reconcile/SKILL.md (user level) or
            <project>/.claude/skills/meta-pixel-crm-reconcile/SKILL.md
   What:    The method for reconciling Meta events with HubSpot records: matched
@@ -66,8 +66,14 @@ This matters more than anything else here.
 - **Meta buckets by `event_time`, not by when it received the event.** A backfill sent
   today with last Tuesday's timestamp lands in last Tuesday's bucket, so a day's total
   can grow afterwards. "Sent today" and "events dated today" are different questions.
-- **Use explicit UTC bounds** for a local day (US Eastern is `04:00Z` to `04:00Z` in
-  daylight time, `05:00Z` in standard time). Never pass a bare date and hope.
+- **Use explicit UTC bounds, and mind daylight saving.** A US Eastern day runs
+  `04:00Z` to `04:00Z` in daylight time and `05:00Z` to `05:00Z` in standard time. The
+  two change days are 25 hours (autumn, `04:00Z` to `05:00Z`) and 23 hours (spring,
+  `05:00Z` to `04:00Z`), and a multi-day window that crosses a change has different
+  start and end offsets. Compute bounds with the helper in
+  [`references/queries.md`](references/queries.md) instead of doing the maths. One fixed
+  offset all year makes every winter "day" run 11 PM to 11 PM, so late-evening events
+  land on the wrong day and both sides look like they disagree when they don't.
 
 ## Getting the numbers
 
