@@ -6,7 +6,7 @@ description: Create, update or push a public GitHub guide repo that shows someon
 <!--
   SKILL.md -- github-guide-repo
   Author:  Jibril Sulaiman (with Claude Code)
-  Date:    2026-09-29 (generic public version 2026-10-14)
+  Date:    2026-09-29 (generic public version 2026-10-14; updated 2026-11-12: drift check)
   Lives:   ~/.claude/skills/github-guide-repo/SKILL.md (user level) or
            <project>/.claude/skills/github-guide-repo/SKILL.md
   What:    The standard for building and pushing public integration guide repos:
@@ -317,3 +317,23 @@ Run every check; don't skip any:
   - any **live** defects found in the working version along the way. Report them;
     don't fix them only in the public repo. Fixing one in production is a live change:
     ask first.
+
+## 7. Check for drift
+
+A clean `git status` only proves the local copy matches GitHub. The working source the
+repo was built from can keep changing after the push, and nothing flags it. When the user
+asks whether repos are current, or before updating one:
+
+- For each repo, compare the newest file time in its source folder with the repo's last
+  commit (`git log -1 --format=%ci`). Ignore source files the repo never included.
+- For skills published in a public skills repo, compare each source skill folder with
+  the date of its public copy's last commit, and read the source's changelog if it has
+  one.
+- List the account's repos (`gh repo list <user> --limit 200`) and match them to local
+  folders, so a repo built from another folder isn't missed.
+- Search the chat transcripts for "push" and "sync" requests and confirm each one
+  reached GitHub.
+
+Report each stale repo with what the public copy is missing, then port only the general
+lessons, the same way as the first publish. One review found three public copies behind
+their sources even though every local repo was clean.
