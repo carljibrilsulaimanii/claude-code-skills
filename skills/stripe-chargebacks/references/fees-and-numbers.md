@@ -102,11 +102,18 @@ combined; 19 pages for Mastercard; 150,000 characters of text across fields (API
   dispute rules, pre-arbitration and arbitration, API (docs.stripe.com/disputes/...)
 - Stripe pricing page and the June 2025 dispute pricing update (support.stripe.com)
 - Visa CE 3.0 materials (Visa/Verifi) and processor summaries
-- 30 YouTube videos by Stripe, chargeback consultants, processors and merchants (2023 to 2026)
-- Hacker News threads on Stripe holds, chargeback fraud and whether fighting is worth it
-- About 45 Reddit threads (r/stripe, r/smallbusiness, r/ecommerce, r/shopify,
-  r/startups, r/Entrepreneur and others, 2023 to Nov 2026), gathered with Gemini and
-  checked against Stripe's docs before use. Reddit figures are merchant anecdotes.
+- 30 YouTube videos (2023 to 2026), checked for topic on Nov 18, 2026: 14 on handling
+  Stripe disputes, 7 on Stripe account reviews, closures and Radar fraud rules, and 9 on
+  card chargebacks in general (Visa and Mastercard rules that apply on Stripe too). One
+  of the 14 is in Hindi/Urdu and added nothing; one of the 9 is written for Nigerian
+  merchants and only its general advice was used.
+- 4 Hacker News threads: three about Stripe (fund holds, chargebacks, whether fighting
+  is worth it) and one about fighting chargeback fraud in general
+- 44 Reddit threads (r/stripe and five other subreddits, 2018 to Nov 2026), gathered with
+  Gemini and checked against Stripe's docs before use: 38 about Stripe disputes, fees or
+  account holds, 6 about chargebacks with no processor named. Reddit figures are merchant
+  anecdotes. The 0.18%-closure story appears in both a video and a Reddit thread and is
+  counted once. A 45th thread (accounting clients, not disputes) was dropped as off-topic.
 - "Radar for Fraud Teams costs $0.02 per transaction" appears in older Reddit threads;
   Stripe's Nov 2026 pricing page lists Radar from $0.05 per screened transaction. Check
   the account's own plan.

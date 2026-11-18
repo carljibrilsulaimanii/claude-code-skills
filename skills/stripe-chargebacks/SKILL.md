@@ -17,10 +17,11 @@ description: >-
 
 # Stripe chargebacks
 
-Built from 30 merchant-side videos on Stripe disputes (Stripe operators, chargeback
-consultants, payment processors, course and coaching sellers, e-commerce owners),
-about 45 Reddit threads and several Hacker News threads from merchants, and Stripe's
-own dispute, pricing, Radar and card-network monitoring docs as of November 2026.
+Built from Stripe's own dispute, pricing, Radar and card-network monitoring docs (as of
+November 2026), 30 merchant-side videos (14 on handling Stripe disputes, 7 on Stripe
+account reviews and Radar fraud rules, 9 on card chargebacks in general, whose Visa and
+Mastercard rules apply on Stripe too), 44 Reddit threads (38 about Stripe, 6 about
+chargebacks with no processor named) and 4 Hacker News threads.
 Where a video or a Reddit post disagrees with Stripe's docs, the docs win and the
 reference files say so. Reddit and video figures are anecdotes, labelled as such.
 
