@@ -1,9 +1,10 @@
 <!--
   README.md -- claude-code-skills
   Author:  Jibril Sulaiman
-  Date:    2026-10-14 (updated 2026-10-20)
+  Date:    2026-10-14 (updated 2026-11-18)
   Lives:   Repo root (GitHub).
   What:    Claude Code skills for publishing integration guides, filing tasks,
+           scanning Slack for technical issues and matching them to Asana,
            checking funnels, reconciling ad-platform conversions against a CRM,
            auditing UTM attribution from ad click to purchase,
            running an ad pipeline from research to measurement,
@@ -25,6 +26,7 @@ These are the ones I use most, with everything specific to my employer removed.
 |---|---|
 | [`skills/github-guide-repo/`](skills/github-guide-repo/) | Turns an integration you built into a public, sanitized GitHub guide repo: gathering the build chats, screenshots and live code, removing everything that identifies the employer, a click-by-click README standard, and scripts that check links and scan for leaks before the push |
 | [`skills/asana-task/`](skills/asana-task/) | Writes Asana tasks a teammate can pick up cold: which project and owner, a fixed description layout with numbered steps and code blocks at the bottom, and the `html_notes` tags Asana accepts and rejects |
+| [`skills/slack-issue-scan/`](skills/slack-issue-scan/) | Daily scan of your team's Slack for technical issues and anything tied to a CRM, platform or integration task: reads the channels where problems show up, matches each one to open Asana tasks, checks "it's fixed" claims against the live systems, proposes tasks for the gaps, and reports in five sections (broken now, gaps, done but still open, waiting on a decision, covered) |
 | [`skills/hubspot-funnel-qa/`](skills/hubspot-funnel-qa/) | Builds, self-checks and audits HubSpot funnel pages against a spec doc: a 42-entry defect catalogue (mostly clone residue and the hidden second module set), a full checklist, Stripe payment-link checks, a domain check, rules for saving page edits without breaking the page, a multi-page console crawler with a desktop-vs-mobile diff, and a page-by-page punch-list template |
 | [`skills/meta-pixel-crm-reconcile/`](skills/meta-pixel-crm-reconcile/) | Reconciles Meta pixel and Conversions API events with HubSpot records (Purchase vs succeeded payments, Lead vs registrations) using matched windows and a three-way comparison, and explains each gap: duplicate senders, browser vs server, inflated CRM records |
 | [`skills/hubspot-stripe-utm-qa/`](skills/hubspot-stripe-utm-qa/) | Finds where a UTM was lost between the ad click and the purchase record in a HubSpot + Stripe setup, proves it with a test, and fixes it without overwriting real captures: what each first / last touch field should mean, eleven repeatable leak tests, a simulate-then-deploy playbook with the HubSpot UI and rate-limit traps, and a one-command live audit script ([`utm_audit.py`](skills/hubspot-stripe-utm-qa/scripts/utm_audit.py)) |
