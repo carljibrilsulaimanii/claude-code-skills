@@ -1,12 +1,13 @@
 <!--
   README.md -- claude-code-skills
   Author:  Jibril Sulaiman
-  Date:    2026-10-14 (updated 2026-11-18)
+  Date:    2026-10-14 (updated 2026-11-18: stripe-chargebacks added)
   Lives:   Repo root (GitHub).
   What:    Claude Code skills for publishing integration guides, filing tasks,
            scanning Slack for technical issues and matching them to Asana,
            checking funnels, reconciling ad-platform conversions against a CRM,
            auditing UTM attribution from ad click to purchase,
+           handling and preventing Stripe disputes and chargebacks,
            running an ad pipeline from research to measurement,
            coaching a car purchase, building and growing a mobile app,
            and turning a TikTok or Instagram creator's posts into a skill.
@@ -30,6 +31,7 @@ These are the ones I use most, with everything specific to my employer removed.
 | [`skills/hubspot-funnel-qa/`](skills/hubspot-funnel-qa/) | Builds, self-checks and audits HubSpot funnel pages against a spec doc: a 42-entry defect catalogue (mostly clone residue and the hidden second module set), a full checklist, Stripe payment-link checks, a domain check, rules for saving page edits without breaking the page, a multi-page console crawler with a desktop-vs-mobile diff, and a page-by-page punch-list template |
 | [`skills/meta-pixel-crm-reconcile/`](skills/meta-pixel-crm-reconcile/) | Reconciles Meta pixel and Conversions API events with HubSpot records (Purchase vs succeeded payments, Lead vs registrations) using matched windows and a three-way comparison, and explains each gap: duplicate senders, browser vs server, inflated CRM records |
 | [`skills/hubspot-stripe-utm-qa/`](skills/hubspot-stripe-utm-qa/) | Finds where a UTM was lost between the ad click and the purchase record in a HubSpot + Stripe setup, proves it with a test, and fixes it without overwriting real captures: what each first / last touch field should mean, eleven repeatable leak tests, a simulate-then-deploy playbook with the HubSpot UI and rate-limit traps, and a one-command live audit script ([`utm_audit.py`](skills/hubspot-stripe-utm-qa/scripts/utm_audit.py)) |
+| [`skills/stripe-chargebacks/`](skills/stripe-chargebacks/) | Handles Stripe disputes and chargebacks end to end: lists open disputes by deadline ([`list-disputes.mjs`](skills/stripe-chargebacks/scripts/list-disputes.mjs)), pulls one dispute's Stripe facts onto a page ([`dispute-packet.mjs`](skills/stripe-chargebacks/scripts/dispute-packet.mjs)), decides fight vs accept vs refund on the fee math, lists the evidence for each Visa, Mastercard and Amex reason code and product type, writes the one-page response, and covers prevention (Radar rules, 3D Secure, early fraud warnings, dispute alerts) and account health (Visa VAMP, Mastercard programs, reserves, closures). Built from 30 videos, about 45 Reddit threads and Stripe's docs. Both scripts are read-only |
 | [`skills/ad-creation-management/`](skills/ad-creation-management/) | Runs one offer's paid-social ads through five gated stages that share one Campaign Blueprint: research and positioning into a 50-angle Creative Mosaic, writing hooks, copy and scripts, making static and video creative, launching on Meta (delivery statuses, learning phase, the optimization-event fields people misread), and measuring on purchases rather than leads so the results pick the next round's angles |
 | [`skills/car-buying-coach/`](skills/car-buying-coach/) | Coaches you through buying or leasing a car one decision at a time and drafts the texts and emails you send dealerships: getting quotes, out-the-door pricing, financing and F&I add-ons, trade-ins and dealer tactics. Distilled from about 1,400 videos by a former dealership salesperson and finance manager (see [`pipelines/tiktok-to-skill/`](pipelines/tiktok-to-skill/)) |
 | [`skills/tiktok-ig-to-skill/`](skills/tiktok-ig-to-skill/) | Turns a TikTok or Instagram creator's posts into a Claude skill, the same way car-buying-coach was built: downloads the whole profile (yt-dlp for TikTok, gallery-dl for Instagram), transcribes it locally ([`transcribe_all.py`](skills/tiktok-ig-to-skill/scripts/transcribe_all.py)), slices the corpus evenly across the timeline for parallel distilling ([`slice_corpus.py`](skills/tiktok-ig-to-skill/scripts/slice_corpus.py)), writes the skill from a proven skeleton, and packages it for upload ([`package_skill.py`](skills/tiktok-ig-to-skill/scripts/package_skill.py)) |
@@ -39,7 +41,8 @@ These are the ones I use most, with everything specific to my employer removed.
 
 [`bundles/`](bundles/) has skills zipped for upload:
 [`car-buying-coach.skill`](bundles/car-buying-coach.skill),
-[`indie-app-playbook.skill`](bundles/indie-app-playbook.skill) and
+[`indie-app-playbook.skill`](bundles/indie-app-playbook.skill),
+[`stripe-chargebacks.skill`](bundles/stripe-chargebacks.skill) and
 [`tiktok-ig-to-skill.skill`](bundles/tiktok-ig-to-skill.skill). In claude.ai go to
 **Settings** → **Capabilities** → **Skills** → **Upload skill**, pick the file, and
 turn it on. It then works on the web, desktop and mobile apps under the same account.
@@ -98,6 +101,24 @@ the Stripe webhook integration") and the skill loads itself, or call it by name 
    ```
 
 The scripts need Bash (Git Bash on Windows) and Python 3.
+
+## Set up stripe-chargebacks
+
+The skill's advice works anywhere, including claude.ai. The two scripts run in Claude Code
+and need:
+
+| Need | Why | Check |
+|---|---|---|
+| Node.js 18 or newer | The scripts use the built-in `fetch` | `node --version` |
+| A Stripe **restricted** key with read access to Disputes, Charges, Customers and PaymentIntents | Pulls disputes and charge facts; the scripts only send GET requests and never submit, accept or refund | Stripe Dashboard > Developers > API keys > Create restricted key |
+| The key in the `STRIPE_LIVE_KEY` environment variable | Keeps the key out of the files and out of Claude's context | `node skills/stripe-chargebacks/scripts/list-disputes.mjs` prints your open disputes |
+
+Runs [`list-disputes.mjs`](skills/stripe-chargebacks/scripts/list-disputes.mjs) and
+[`dispute-packet.mjs`](skills/stripe-chargebacks/scripts/dispute-packet.mjs).
+
+To add facts about your own business (what you sell, where proof of delivery lives, your
+Stripe settings), create `references/your-business.md` in your copy of the skill and add
+a row for it to the table in its `SKILL.md`. Keep that file out of any public repo.
 
 ## Scripts (github-guide-repo)
 
