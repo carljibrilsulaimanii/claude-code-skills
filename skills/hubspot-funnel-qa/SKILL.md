@@ -17,7 +17,7 @@ description: >-
 <!--
   SKILL.md -- hubspot-funnel-qa
   Author:  Jibril Sulaiman (with Claude Code)
-  Date:    2026-10-15 (updated 2026-11-12: spec doc pulled fresh, domains, safe editing)
+  Date:    2026-10-15 (updated 2026-11-18: build and port defects 43-54, review lightbox)
   Lives:   ~/.claude/skills/hubspot-funnel-qa/SKILL.md (user level) or
            <project>/.claude/skills/hubspot-funnel-qa/SKILL.md
   What:    One method for building, self-checking and auditing HubSpot funnel pages,
@@ -204,6 +204,15 @@ skimming for what's at risk.
 
 [`assets/report-template.html`](assets/report-template.html) is a working layout with
 the severity chips styled. Publish it as a page, or offer a Word copy for comments.
+
+## Building, porting or redesigning a page
+
+A page whose copy is all present can still have lost its backgrounds, fonts and
+formatting (defect 54). For any port, migration or redesign, use the
+[`hubspot-page-port`](../hubspot-page-port/) skill and run its side-by-side compare.
+Every new page with review screenshots ships with click-to-enlarge:
+[`assets/review-lightbox.html`](assets/review-lightbox.html) (defect 47). Defects 43-54
+cover the build-side traps.
 
 ## 5. Fixing what you found
 

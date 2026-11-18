@@ -325,3 +325,117 @@ forwards to, and after any re-slug or unpublish. Report a forward into a 404 as 
 live site, or let it lapse), not as a task per domain. Fix the record where the
 domain's nameservers point, which isn't always the registrar (see
 [domains.md](domains.md)).
+
+## Building and porting pages
+
+Entries 43 to 54 came from building, porting and redesigning pages rather than
+auditing them. Each one passed a "does the copy match" check.
+
+### 43. The section that took the next section's style
+**Looks like:** after a section is deleted, every section below it has the wrong
+background, and one section vanishes on desktop while the phone still shows it.
+**Really is:** in the page JSON, `layoutSections.dnd_area.rows[i]` pairs with
+`rowMetaData[i]` (background, padding, `breakpointStyles.default.hidden`) by position
+only. The row was deleted and its style entry wasn't, so every later section took the
+style of the one above it, including a desktop-only hide. The phone check passed
+because the hide applied to desktop only.
+**Avoid it:** add and remove top-level rows and their `rowMetaData` together, assert the
+two lengths match, and compare each section's style with the source. Check 1440px as
+well as 375px after any structural edit.
+
+### 44. The white heading on a white section
+**Looks like:** a section with body text and no heading, and a checklist with icons and
+no words.
+**Really is:** the text is there, in white. The theme's heading and list modules take a
+`sectionStyleVariant`, and the white-text variant meant for a dark band was copied onto
+light sections.
+**Avoid it:** pick the variant from the section's background and screenshot every light
+section.
+
+### 45. The paragraphs that run together
+**Looks like:** a block of copy with no gap between paragraphs.
+**Really is:** the page's Head HTML zeroes paragraph margins
+(`.dnd-module p{margin-bottom:0 !important}`), and every page cloned from it inherits the
+rule.
+**Avoid it:** add `.dnd-module p + p{margin-top:16px !important}`, or keep one paragraph
+per module. Look at every multi-paragraph block.
+
+### 46. The card grid with titles at different heights
+**Looks like:** in a three-across grid, one card's title sits far higher than its
+neighbours'.
+**Really is:** the product images have different shapes (tall books beside a wide
+monitor), so each title starts wherever its image ends. A width cap doesn't fix a tall
+image.
+**Avoid it:** give every image in a grid the same box, a fixed height plus
+`object-fit: contain`, and check the title row lines up.
+
+### 47. The review screenshot nobody can read
+**Looks like:** a wall of review screenshots, readable on a laptop and a blur on a
+phone.
+**Really is:** written reviews are pictures of text, and they shrink with the column.
+**Avoid it:** every page with review screenshots ships with click-to-enlarge:
+[`assets/review-lightbox.html`](../assets/review-lightbox.html) in Head HTML, with the
+heading pattern set to the page's review headings. Make it a standing rule for new
+builds, ports and redesigns, and test it by opening one review at each width.
+
+### 48. The hero that kept the words and lost the layout
+**Looks like:** the copy is right, but the hero has a large empty area under the text,
+the button is centred under left-aligned text, and the photo floats.
+**Really is:** the source hero was a dark band with a large headline, a left-aligned
+button and a cut-out photo resting on the band's bottom edge. The port poured the same
+words into a generic two-column hero.
+**Avoid it:** compare each section with the source side by side at both widths. Keep
+text and button alignment the same inside a block, and rest a cut-out photo on the
+section's bottom edge with no bottom padding.
+
+### 49. The year that changed everywhere except the pictures
+**Looks like:** the copy says next year throughout.
+**Really is:** two graphics still show last year, one with last year's event dates, and
+the image alt text still says it too. A text replace reaches neither.
+**Avoid it:** after a year or date change, list every image that shows a year or date
+and check the alt text. Report the graphics as placeholders that need new artwork, with
+the dates needed to make them.
+
+### 50. The order form with no price on it
+**Looks like:** a checkout form with an empty space where the product name and price
+belong.
+**Really is:** the order module shows its label and price from its own fields, and a
+clone or new instance leaves them blank.
+**Avoid it:** fill the label and price to match the payment link's product, turn test
+mode off, and read the price on the page next to the price on the checkout.
+
+### 51. The leftover row on every order page
+**Looks like:** an add-to-calendar or upsell block from a free-class page sitting on a
+course checkout.
+**Really is:** clone residue on every order and confirmation page of the funnel, because
+nobody opened those pages after cloning them.
+**Avoid it:** after a funnel is built from clones, open every page in it, order and
+confirmation pages included, and read each one against what it is for.
+
+### 52. The teammate's edit that got overwritten
+**Looks like:** a section someone else built disappears after an unrelated change.
+**Really is:** a module was rewritten from a copy read days earlier. A teammate had
+turned it into an agenda that morning, and the write erased it.
+**Avoid it:** read each module fresh immediately before writing it on a shared page. If
+it changed since your last read, keep their content and change only what was asked, or
+ask first.
+
+### 53. The copy reported missing that was never visible
+**Looks like:** a port audit says dozens of lines of the original are missing.
+**Really is:** the lines came from the source platform's HTML, which carries hidden
+mobile copies, elements with hide classes, and leftover sections nobody can see.
+**Avoid it:** compare visible text only, and report a gap only when the text shows on
+the source page.
+
+### 54. The port with the right words and the wrong look
+**Looks like:** every line of copy from the source page is on the new page, the buttons
+work, and the page passes a copy check.
+**Really is:** the port was built from a plain-text extract of the source. It lost the
+three background images, the accent words set in a second font (a green serif italic),
+dozens of bold phrases, the source's heading capitalisation, and dark text on light
+cards, which came out white. HubSpot also drops a section's background colour when a
+background image is set, so a transparent overlay meant to sit on cream sits on white.
+**Avoid it:** run the side-by-side compare from the
+[`hubspot-page-port`](../../hubspot-page-port/) skill on every port, migration and
+redesign, and treat each difference as a defect until it is fixed or listed as
+deliberate. A copy check alone can't pass a port.

@@ -1,0 +1,41 @@
+<!--
+  review-lightbox.html -- hubspot-funnel-qa
+  Author:  Jibril Sulaiman (with Claude Code)
+  Date:    2026-11-18
+  Lives:   paste into the page's Head HTML (HubSpot: page settings, Advanced options,
+           Head HTML).
+  What:    Click-to-enlarge for written-review screenshots. Clicking or tapping one
+           opens it large on a dark background over the whole screen; the X on the
+           image's corner, a click outside, or Esc closes it.
+  How:     finds the review images by the heading of their section. Edit the pattern
+           in init() to match your page's review headings.
+  Why:     review screenshots are pictures of text and can't be read on a phone
+           without it (defect 47).
+-->
+<style>
+.review-lb-thumb{cursor:zoom-in}
+.review-lb{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100vh;height:100dvh;z-index:2147483647;background:rgba(10,15,30,.92);align-items:center;justify-content:center;padding:28px 16px;box-sizing:border-box;overflow-y:auto}
+.review-lb.is-open{display:flex}
+.review-lb__box{position:relative;max-width:min(100%,900px);margin:auto}
+.review-lb__img{display:block;max-width:100%;max-height:calc(100vh - 56px);max-height:calc(100dvh - 56px);width:auto;height:auto;object-fit:contain;border-radius:8px;background:#fff}
+.review-lb__x{position:absolute;top:-14px;right:-10px;width:40px;height:40px;border-radius:50%;border:0;background:#fff;color:#323134;font:400 28px/40px Montserrat,sans-serif;cursor:pointer;padding:0;box-shadow:0 2px 10px rgba(0,0,0,.35);z-index:1}
+</style>
+<script>
+(function(){
+  function biggest(im){var best=null,bw=0;(im.getAttribute('srcset')||'').split(',').forEach(function(p){var s=p.trim().split(' '),w=parseInt(s[1],10)||0;if(s[0]&&w<=1800&&w>bw){best=s[0];bw=w}});return best||im.currentSrc||im.src}
+  function init(){
+    // Every image in the two review sections (desktop and mobile copies), found by section heading so row renumbering can't break it
+    var imgs=[];Array.prototype.forEach.call(document.querySelectorAll('h1,h2,h3'),function(h){if(!/What .* Are Saying|Reviews|Testimonials|Hear From Our/i.test(h.textContent))return;var row=h.closest('[class*="dnd_area-row-"]');if(row)Array.prototype.forEach.call(row.querySelectorAll('img'),function(i){if(imgs.indexOf(i)<0)imgs.push(i)})});
+    if(!imgs.length||document.querySelector('.review-lb'))return;
+    var ov=document.createElement('div');ov.className='review-lb';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Enlarged review');
+    ov.innerHTML='<div class="review-lb__box"><img class="review-lb__img" alt=""><button type="button" class="review-lb__x" aria-label="Close">&times;</button></div>';
+    document.body.appendChild(ov);var big=ov.querySelector('.review-lb__img');
+    function close(){ov.classList.remove('is-open');document.documentElement.style.overflow='';big.removeAttribute('src')}
+    ov.addEventListener('click',function(e){if(e.target!==big)close()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+    imgs.forEach(function(im){im.classList.add('review-lb-thumb');
+      var a=im.closest('a');(a||im).addEventListener('click',function(e){e.preventDefault();e.stopPropagation();big.src=biggest(im);big.alt=im.alt||'Review';ov.classList.add('is-open');document.documentElement.style.overflow='hidden';ov.querySelector('.review-lb__x').focus()},true)});
+  }
+  if(document.readyState!=='loading')init();else document.addEventListener('DOMContentLoaded',init);
+})();
+</script>
