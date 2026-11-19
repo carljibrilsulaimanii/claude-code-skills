@@ -439,3 +439,58 @@ background image is set, so a transparent overlay meant to sit on cream sits on 
 [`hubspot-page-port`](../../hubspot-page-port/) skill on every port, migration and
 redesign, and treat each difference as a defect until it is fixed or listed as
 deliberate. A copy check alone can't pass a port.
+
+### 55. The accent word nobody can see
+**Looks like:** a heading reads "Have questions or want to talk to an" and stops.
+**Really is:** the accent words are set in the brand green and the band behind them is a
+green background image. Contrast about 1:1. It went live and was copied onto a second page.
+**Avoid it:** run [`scripts/contrast-audit.js`](../scripts/contrast-audit.js) at both widths
+on every build and every edit that touches text colour or a background. Anything under 2:1
+is a blocker. Accent words on green or dark bands use a white accent class.
+
+### 56. The spacing the template takes away
+**Looks like:** "fix spacing" notes one after another: a price line hanging under its button,
+a countdown crowding its heading, a video grid hugging its title, double gaps in one block of
+copy and none in the next.
+**Really is:** the template's head HTML zeroes heading and paragraph margins with
+`!important`; copied rich text uses empty `&nbsp;` paragraphs as spacers; some section
+paddings were 0; a sub-line that sits inside the button on the source was a separate module.
+**Avoid it:** run [`scripts/spacing-audit.js`](../scripts/spacing-audit.js) at both widths,
+strip empty `&nbsp;` paragraphs before adding paragraph spacing, restore heading margins with
+a higher-specificity rule, and fix the whole page in one pass. On a page with a source, copy
+the source's spacing; never apply a house minimum (#60).
+
+### 57. The person in the background who drifts off the edge
+**Looks like:** on a wide screen, the presenter's photo sits at the far edge of a section,
+nowhere near the copy about them.
+**Really is:** they are part of a full-width `background-size: cover` image, so the wider the
+screen, the further they drift from the text.
+**Avoid it:** on a page with a source, place the person exactly where the source does. With no
+source to follow, cut them out as their own image beside the text on a plain background.
+
+### 58. The list item that shows "&amp;amp;"
+**Looks like:** "7 Investing &amp;amp; Wealth-Building Programs" on the page.
+**Really is:** some list modules store plain text, so entities and tags are shown literally.
+**Avoid it:** write `&` and plain text in list items; search the page text for `&amp;amp;` and
+`<` after every build.
+
+### 59. Cards of different heights from one tall image
+**Looks like:** three cards in a row and one is twice as tall, because its image is a tall
+phone; in testimonial cards the names land at different heights.
+**Avoid it:** give every image in a card row the same height with `object-fit: contain`, push
+the last line of each card to the bottom, and check card title weight against the source.
+
+### 60. The variant that drifted from its source
+**Looks like:** a page built from a spec doc on top of a source page, where the reviewer says
+none of the font sizes or placement should have changed: testimonial photos gone, every video
+replaced when only some were meant to go, a photo moved from the left column to the right, a
+centred header now left-aligned, a title in a different case.
+**Really is:** three habits. The build started from an earlier copy of the source that had
+already lost things, and was never compared against the live original. Spec changes were
+applied by rebuilding sections instead of swapping content into the source's cards. And each
+"fix spacing" round restyled toward a house rule instead of measuring the source.
+**Avoid it:** follow "Pixel-perfect" in the [`hubspot-page-port`](../../hubspot-page-port/)
+skill: compare against the live original before the first hand-off and after every fix
+round (the compare now counts photos and videos per heading and reports blocks that changed
+side), and screenshot every section side by side. If the spec doesn't say it changes, it
+doesn't change.

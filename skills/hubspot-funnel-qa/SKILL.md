@@ -144,6 +144,11 @@ short:
   breakpoint, and an edit lands on one. Diff the **visible** text at 1440px against
   375px (the diff is at the bottom of [`scripts/crawl.js`](scripts/crawl.js)). Say
   which side is correct; sometimes it's mobile.
+- **Can every word be read, and is anything crammed?** Run
+  [`scripts/contrast-audit.js`](scripts/contrast-audit.js) and
+  [`scripts/spacing-audit.js`](scripts/spacing-audit.js) at 1440px and 375px. If the page
+  has a source page, fix each finding by matching the source (see the pixel-perfect rule
+  in [`hubspot-page-port`](../hubspot-page-port/)).
 - **Dates.** Every date string on every page against the agreed date, including
   weekday and year.
 - **Images.** Open the campaign artwork and the `og:image` and read the headline. A

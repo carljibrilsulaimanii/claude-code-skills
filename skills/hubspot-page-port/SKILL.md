@@ -32,6 +32,25 @@ A port is a copy of a page's **look**, not only its words. It's done when the co
 in step 5 reports no differences, or every remaining difference is listed for the
 owner as a deliberate change.
 
+## Pixel-perfect: the source page is the design
+
+A port, a clone, and any page built from a source page plus a spec doc (a "variant") is
+**pixel-perfect to the source from the first draft**: same section order, layout (what sits
+left, right, above, below), font sizes, capitalisation, photos, videos, card styles and
+spacing. The only differences allowed are the ones the spec asks for.
+
+- **The source is the live original**, not an earlier copy of it. An earlier port may
+  already have drifted; compare against the original every time.
+- **Spec changes swap content inside the source's layout.** New videos go into the
+  source's video cards; a new testimonial gets the same card, photo and stars. Never
+  replace a section's layout because its content changed.
+- **"Fix spacing / alignment" means move it toward the source**, not toward a house rule.
+  Measure the source and copy its numbers. If the source itself looks wrong, ask the owner.
+- **When the spec is silent, the source wins.** Don't remove, add or restyle anything the
+  spec doesn't mention.
+- **Run the compare (step 5) before the first hand-off**, not after a complaint, at both
+  widths, and screenshot every section of both pages side by side.
+
 ## 1. Capture the source
 
 1. Open the source page at **1440x900**, and later at 375x812. Screenshot every section
@@ -90,9 +109,11 @@ desktop and phone check.
 2. Navigate **the same tab** to the new page (preview or live). If the port also changes
    the year, set `window.PORT_YEAR = ['2026','2027']`. Run the script again.
 3. For every source text block it lists missing copy, capitalisation changes, lost or
-   added bold / italic / accent words, font, size, weight, colour and alignment changes,
-   and different section backgrounds. It also lists copy found only on the new page and
-   the background images each page uses.
+   added bold / italic / accent words, font, size, weight, colour, alignment and
+   capitalisation (text-transform) changes, blocks that moved to the other side of the
+   page, and different section backgrounds. It also lists copy found only on the new page,
+   the background images each page uses, and every photo, avatar, video and embed counted
+   per heading (removed testimonial photos or a swapped video set show up there).
 
 The snapshot travels in `window.name`, which survives navigation between subdomains of
 one site. When the two pages are on different sites, run
@@ -104,6 +125,11 @@ are cosmetic: `left` vs `start` alignment, or a colour on a wrapper that a child
 overrides. Confirm those on a screenshot. Then compare the screenshots of both pages
 side by side, because the script can't see image crops, spacing or how a photo sits in
 a hero.
+
+Two more scripts in the [`hubspot-funnel-qa`](../hubspot-funnel-qa/) skill find problems the
+compare doesn't: `contrast-audit.js` (text too close to its background) and
+`spacing-audit.js` (blocks crammed together). On a page with a source, the fix for each
+finding is whatever the source does.
 
 ## 6. Hand back
 

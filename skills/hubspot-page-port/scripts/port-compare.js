@@ -9,10 +9,14 @@
            navigation between subdomains of one site.
   What:    compares every visible text block (copy, capitalisation, bold / italic /
            accent words, font, size, weight, colour, alignment, section background)
-           and the background images of the two pages.
+           the background images, block positions and media of the two pages.
   Why:     a ported page passed a copy check while losing its source's background
            images, accent font, bold phrases and capitalisation. This makes the look
            comparable, not just the words.
+  Update:  (2026-11-19) also compares text-transform, which side of the page each block
+           sits on, and every photo / video / embed per heading. A variant page lost its
+           testimonial photos, half its videos and a photo-left layout, and none of that
+           was text.
 */
 (() => {
   const vis = (e) => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none'; };
@@ -38,11 +42,18 @@
     });
     return [...new Set(out)].sort();
   };
+  // Where a box sits across the page: left, centre or right third (layout swaps show up here).
+  const side = (r) => { const c = (r.left + r.width / 2) / innerWidth; return r.width > innerWidth * 0.6 ? 'full' : c < 0.42 ? 'left' : c > 0.58 ? 'right' : 'centre'; };
+  const heads = () => [...document.querySelectorAll('h1,h2,h3')].filter((h) => vis(h) && h.textContent.trim());
+  const headingAbove = (e) => { let t = '(top)'; for (const h of heads()) { if (h.compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING) t = h.textContent.replace(/\s+/g, ' ').trim().slice(0, 50); else break; } return t; };
   const snap = () => ({
     url: location.href,
     blocks: [...document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,summary')]
       .filter((e) => vis(e) && e.textContent.trim() && !(e.tagName === 'P' && e.closest('li')))
-      .map((e) => { const cs = getComputedStyle(e); return { tag: e.tagName, text: e.textContent.replace(/\s+/g, ' ').trim(), font: cs.fontFamily.split(',')[0].replace(/"/g, ''), size: Math.round(parseFloat(cs.fontSize)), weight: cs.fontWeight, color: cs.color, align: cs.textAlign, marks: marks(e), bg: sectionBg(e) }; }),
+      .map((e) => { const cs = getComputedStyle(e); const r = e.getBoundingClientRect(); return { tag: e.tagName, text: e.textContent.replace(/\s+/g, ' ').trim(), font: cs.fontFamily.split(',')[0].replace(/"/g, ''), size: Math.round(parseFloat(cs.fontSize)), weight: cs.fontWeight, color: cs.color, align: cs.textAlign, tt: cs.textTransform, side: side(r), marks: marks(e), bg: sectionBg(e) }; }),
+    // Photos, videos and embeds, each tagged with the heading above it and the side of the page it sits on.
+    media: [...document.querySelectorAll('img,video,iframe')].filter((e) => { const r = e.getBoundingClientRect(); return vis(e) && r.width >= 40 && r.height >= 40; })
+      .map((e) => { const r = e.getBoundingClientRect(); return { kind: e.tagName === 'IMG' ? (r.width <= 160 && Math.abs(r.width - r.height) < 12 ? 'avatar' : 'image') : (r.height > r.width ? 'vertical video' : 'video'), under: headingAbove(e), side: side(r) }; }),
     bgImages: [...new Set([...document.querySelectorAll('*')].filter((e) => { const r = e.getBoundingClientRect(); return r.width > 500 && r.height > 100 && getComputedStyle(e).backgroundImage.includes('url('); }).map((e) => file(getComputedStyle(e).backgroundImage)[0]))],
   });
   let saved = null; try { saved = JSON.parse(window.name); } catch (e) {}
@@ -62,7 +73,7 @@
     if (norm(s.text) !== norm(n.text)) R.capitalisation.push(norm(s.text).slice(0, 60) + '  ->  ' + n.text.slice(0, 60));
     const sm = s.marks.map((m) => (yf ? m.split(yf).join(yt) : m)).join(' | '), nm = n.marks.join(' | ');
     if (sm !== nm) R.formatting.push(s.text.slice(0, 45) + ': source ' + (sm || 'plain') + ' / new ' + (nm || 'plain'));
-    const d = ['font', 'weight', 'color', 'align'].filter((a) => String(s[a]) !== String(n[a])).map((a) => a + ' ' + s[a] + ' -> ' + n[a]);
+    const d = ['font', 'weight', 'color', 'align', 'tt', 'side'].filter((a) => String(s[a]) !== String(n[a])).map((a) => a + ' ' + s[a] + ' -> ' + n[a]);
     if (Math.abs(s.size - n.size) > 2) d.push('size ' + s.size + ' -> ' + n.size);
     if (d.length) R.style.push(s.text.slice(0, 45) + ': ' + d.join('; '));
     if (s.bg.color !== n.bg.color || s.bg.images !== n.bg.images) R.background.push(s.text.slice(0, 45) + ': source ' + s.bg.color + ' ' + s.bg.images + ' / new ' + n.bg.color + ' ' + n.bg.images);
@@ -72,6 +83,11 @@
   Object.entries(R).forEach(([k, v]) => (out[k + ' (' + v.length + ')'] = v));
   out['only on new page (' + extra.length + ')'] = extra;
   out.backgroundImages = { source: saved.bgImages, new: now.bgImages };
+  // Media per heading: removed testimonial photos, swapped video sets and a photo moved from one side to the other all show here.
+  const tally = (m) => m.reduce((a, x) => { const k = x.under + ' | ' + x.kind + ' ' + x.side; a[k] = (a[k] || 0) + 1; return a; }, {});
+  const ms = tally(saved.media || []), mn = tally(now.media);
+  const md = [...new Set([...Object.keys(ms), ...Object.keys(mn)])].filter((k) => (ms[k] || 0) !== (mn[k] || 0)).map((k) => k + ': source ' + (ms[k] || 0) + ' / new ' + (mn[k] || 0));
+  out['media differences (' + md.length + ')'] = md;
   window.name = '';
   return out;
 })();
